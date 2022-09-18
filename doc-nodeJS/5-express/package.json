@@ -1,0 +1,20 @@
+{
+  "name": "pkm-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Adam Fraga",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.7.14",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.16"
+  }
+}

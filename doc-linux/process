@@ -1,0 +1,25 @@
+  List process:
+
+    ps "list current process runing in terminal"
+    ps -ef list all process with full status information)
+    ps aux list process with all details
+    ps aux -sort=%mem | less (sort by memory usage)
+
+      - UID = User who launch the process
+      - PID = Process ID
+      - PPID = Parent process ID
+      - %CPU = Cpu utilisation
+      - %MEM = Memory usage express by %
+      - VSZ = virtual memory accessible by the process in KB
+      - RSS =Size of physical memory allocated by the process   
+      - STAT = Process state (S: Sleeping, R: Running, Z: Zombie, T: Stopped, I: Hide kernel Thread, I<: High priority, N: Low priority)
+      - STIME = Time when the process have started
+      - TTY = name of the controlling terminal for the process, if "?" it's a system service or a daemon.
+      - TIME = cumulate CPU time used for the process 
+      - CMD = command used to start the process
+
+    pstree
+    pgrep
+    top
+
+------------------------------------------------------------------------------------------------

@@ -1,0 +1,5 @@
+  CTRL U "Cut the line to paste it later"
+
+  CTRL R  "Search in histo command"
+
+  df -h "List mounted volumes (volume content can be accessed by his path)"

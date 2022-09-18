@@ -1,0 +1,74 @@
+                                                AFFICHAGE
+
+echo    afficher sur la sortie standart
+
+cat     afficher un fichier
+
+less    affiche sur la sortie standart et permet de scroll et rechercher des occurences
+
+*-------------------------------------------------------------------------------------------------*
+
+                                                 FILTRER
+
+head/tail                       affiche les 10 premieres ou dernieres ligne l'option -n 5
+                                permet d'affficher les n lignes
+grep "occurences" "fichier"     affiche les occurences et les filtre voir options
+
+*-------------------------------------------------------------------------------------------------*
+
+                                                REDIRECTION 
+
+
+< >                     Redirige sur le fichier suivant ou précédent
+
+>> <<                   Ajoute dans le fichier sans l'écraser.
+
+2>myfile.txt            Renvoi les erreur dans "myfile.txt"
+2>&1                    Redirige la sortie d'erreur sur la sortie standart.
+
+&&                      Permet le chainage de commande.
+
+|                       Simule l'entrée standart et permet le chainage de commandes chaque commande
+                        traitera la sortie du pipe.
+
+*-------------------------------------------------------------------------------------------------*
+                                            TRIS ET RECHERCHE
+
+sort                    Tri les caractères ordre ASCII Maj avant minuscule
+
+cut                     Permet de couper les champs sur un délimiteur précisé.
+cut -d, -f 1            Permet de couper sur le délimiteur virgule et de récupérer
+                        la 1ere occurence de chaque ligne.
+
+sed                     Permet de modifier des flux de données.
+sed "s/thomas/Thomas/"  Permet de remplacer des occurences ou des caractères par d'autres dans un fichier
+
+tr                      Permet de modifier des caractères o udes occurences
+tr "éx" "pa"            Modifie tout les éx du fichier par des pa.
+
+wc                      Affiche le nombre de lignes,de mots et de caractère.
+
+file                    Donne des infos sur un fichier passer en paramètre.
+
+find                    Filtre les fichiers d'une directory, sur le nom le poid permet de les alterer etc...
+find /usr -n "my"       Affiche tout les fichiers commençant par my dans le repertoire usr
+
+*-------------------------------------------------------------------------------------------------*
+                                                RÉSEAUX
+
+ifconfig                Donne des infos sur le réseaux.
+
+*-------------------------------------------------------------------------------------------------*
+
+                                             ENVIRONNEMENT
+
+env                     Affiche toutes les variables d'environnement
+export "LINE=25"        Enregistre la variable dans les variables d'environnement
+$LINE                   Affichera 25
+
+/dev/null               Tout les fichiers envoyer dans /dev/null disparaissent
+
+*-------------------------------------------------------------------------------------------------*
+                                               TOOLS
+
+bc                      Calculatrice scientifique qui lit sur l'entrée standart.

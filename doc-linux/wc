@@ -1,0 +1,4 @@
+COUNT
+
+  wc -l "count number of line -w word and -c char useful for stat"
+

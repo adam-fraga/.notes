@@ -1,0 +1,26 @@
+Find File
+
+  find "path" -name "filename" (Search by name)
+  find "path" -iname "filename" (Search by name case insensitive)
+  find "path" -name "fil*" (Star specify name contain the string "fil")
+  find "path" -name "*il*" (double star specify name contain the string "il" inside of it)
+
+Find by size
+
+  find "path" -type f -size +10(M K B mega kilo or byte) (Search file by size > 10 )
+  find "path" -type f -size +10M -size -2M (Search file by size in range)
+
+Find directory
+
+  find "path" -d  (Search directory inside a specify path)
+  find "path" -d -maxdepth 2  -perm 755 (Search directory inside a specify path with 2 level of deep with right 755)
+
+Find and delete
+
+  find "path" -name "filename" -delete (delete the files permanently)
+
+Find and execute for each file
+
+  find "path" -name "filename" -exec cp {} /home/adam/files/ \; (execute copy on each file)
+  find "path" -name "filename" -ok cp {} /home/adam/files/ \; (execute copy on each file but ask user for each of them)
+

@@ -1,0 +1,8 @@
+GREP
+
+grep "user" "/wk/config.txt" (search for user in config file)
+grep -c "user" "/wk/config.txt" (search for number of line contains user)
+grep -v "user" "/wk/config.txt" (search for line does'nt contain user in config file)
+grep -R "user" /etc/config/ (search recursively in each file of the folder the line who contains user)
+grep -w "user" "/wk/config.txt" (Search for word user)
+grep -in "user" "/wk/config.txt" (case insensitive and print the line number in the file)
