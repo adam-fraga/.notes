@@ -4,8 +4,12 @@ import java.util.ArrayList; //Import
 //Run with java file.java or with java binary.class (without class extension)
 
 public class Main { // sc => class
+
   // Main is the constructor (executed automaticaly)
   public static void main(String[] args) { // sc => main
+    for (int i = 0; i < 10; i++) {
+      System.out.println("LOOP: " + i);
+    }
     // Object Type
     appendLastName("Adam", "Fraga"); // Work because it's a static method so can be use in the class itself
     Wolf wolf = new Wolf("Law", "meat");
@@ -17,4 +21,5 @@ public class Main { // sc => class
     // This keyword can't be use in static method (static refere to the class)
     System.out.println(name + " " + lastName); // Concat in Java same as JS
   }
+
 }

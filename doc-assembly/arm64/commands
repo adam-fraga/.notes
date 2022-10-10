@@ -1,0 +1,8 @@
+Generate .o file :
+  as "file.asm" -o "file.o"
+
+Generate binary:
+  ld basics.o -o hello -lSystem -L /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
+
+Disasemble .o file:
+  objdump -d basics.o

@@ -1,94 +1,87 @@
-// g++ est un compilateur comme gcc mais pour cpp il peut  prendre plusieurs
 // paramètres: g++ -std=c++17 -Wall -Wextra -Werror base.cpp -o prog
 
-#include <iostream> //Iostream est une lib contenant des fonctions comme cout etc..
-#include <string> // Lib permettant le gestion des strings
-#include <vector> // Lib permettant la gestion des vecteur (tableaux dynamique)
-#include <climit> // Permet d'utiliser des fonction pour voir le nombre de place que prend un int, short, long etc...
-/*
-   std est un namespace contenant des fonction se trouvant dans la lib standart on peux l'appeler avant les fonctions
-  de la librairie stantard ou l'appelé au dessus du fichier.
-*/
+#include <iostream> // Lib contains functions like cout etc..
+#include <string> // Lib allow string management
+#include <vector> // Lib allow vector usage
+#include <climit> // Contains function that show size of int, short, long etc...
 
-using namespace std;
+using namespace std; // Namespace contains standard library functions
 
-// Pour rendre la fonction fonctionnel dans main on la prorotype au dessus
-// Il lest possible de l'appelé après en déclarant la signature de la fonction au dessus
-// La signature est literralement la première ligne du prototype avec un semi column a la fin
+// Function in CPP must be prototyped on top of main function
+// It's possible to prototype function behind main but you must declare the signature on the top.
+// signature = first top line of a prototype without brackets
 
 int addNumbers(int nb1, int nb2)
   {
     return nb1 + nb2;
   }
 
-int main() // Comme en C la fonction main demarre tout programme Cpp
+int main() // Main is the entrypoint
 {
 
-  /* cout affichage standard (Memoire tampon)
-     std::cerr erreur (affichage direct)
-     std::clog journalisation (Memoire tampon)
-     std::endl retour a la ligne et flush (vide le tampon)
-     std::flush vide le tampon manuellement
+  /* cout standard display (Buffer memory)
+     std::cerr err (direct display)
+     std::clog journalisation (Buffer memory)
+     std::endl backline & flush (Remove Buffer)
+     std::flush remove buffer manualy
 
-  << et >> sont des operateurs de redirection
-
+  << & >> Redirection operators
   */
+
   cout << "Hello ";
   cout << "World";
   cout << "!" << endl;
 
   // TYPES DE VARIABLES
 
-  // La librairie <string> permet l'utilisation de string ce ne sont pas des types primitifs
+  // String provide by string library are not primitives
   string name = "Florent";
-  char c = 'A';  // caractere 8bit
+  char c = 'A';  // char 8bits
   
-  // NOMBRES
-  //Possible de mettre unsigned pour les négatif sachant que la valeur maximal en est impacté
-  short nb = 1;         // minimum 16bits signed int
-  int nb2 = 30;          // minimum 16bits signed int (not smaller than short)
+  // Number
+  
+  signed short nb = 1;   // minimum 16bits signed int
+  unsigned int nb2 = 30; // minimum 16bits signed int (not smaller than short)
   long nb3 = 40;         // minimum 32bits signed int
   long long nb4 = 50;    // minimum 64bits signed int
   
-  // decimal
   float nb5 = 2.5f;     // Single percision floating point
   double nb6 = 2.5;     // Double percision floating point
   long double nb7 = 2.5;// extended percision floating point
 
-  //Sizeof renvoi le nombre de bit que prend une variable en mémoire
+  //Sizeof return amount of bits taken in memory
   cout << sizeof(nb4) << endl;
 
-  // bool
   bool isTall;
   isTall = true; // 1bit -> true/false
   
-  // constantes
   int const BIRTHDAY = 1991;
 
-  // casting
+  // Casting
 
   cout << (int)3.14 << endl;
   cout << (double)3/2 << endl;
 
-  // pointers
+  // Pointers
+
   int num = 10;
 
-  cout << &num << endl; // Afficher l'adresse da la variable
+  cout << &num << endl; // Display address
   
-  int *pNum = &num; // Pour stocker un pointeur (adresse) on utilise * et on indique le type du pointeur
+  int *pNum = &num; // * to declare pointer
 
-  cout << pNum << endl; // Afficher l'adresse du pointeur
-  cout << *pNum << endl; // Afficher la valeur contenu à l'adresse (déréférence le pointeur)
+  cout << pNum << endl; // Display pointer address
+  cout << *pNum << endl; // Display the pointed value (dereferencing)
 
   // STRINGS
 
   string greeting = "Hello";
 
-  cout << greeting.length(); // Longueur de la chaine
-  cout << greeting[0] << endl; // récup index
-  cout << greeting.find("llo") << endl; // Si llo est présent retourne l'index ou demarre la séquence 
-  cout << greeting.substr(2) << endl; // Retourne les caractère après le 2eme index (après e)
-  cout << greeting.substr(1, 3) << endl; // Retourne les caractere entre le 1er et le 3eme index (ell)
+  cout << greeting.length(); // Length of the string
+  cout << greeting[0] << endl; // display index 0
+  cout << greeting.find("llo") << endl; // Display llo or bgin the sequence
+  cout << greeting.substr(2) << endl; // Return characters after the second chars
+  cout << greeting.substr(1, 3) << endl; // Return chars between first and third chars
 
   // USERS INPUT
 
@@ -111,9 +104,9 @@ int main() // Comme en C la fonction main demarre tout programme Cpp
   // ARRAYS
 
   int luckyNumbers[] = {4, 8, 15, 16, 23, 42};
-  // Ou on donne le nombre d'element qu'on souhaite stocker et l'allocation mémoire se fait pour ici 9 element
-  int array = [9];
 
+  // Reserve an array of 9 element
+  int array = [9];
   luckyNumbers[0] = 90;
   cout << luckyNumbers[0] << endl;
   
@@ -122,32 +115,34 @@ int main() // Comme en C la fonction main demarre tout programme Cpp
     {1, 2, 3},
     {4, 5, 6}
   };
-  //ou
+
+  //OR
 
   numberGrid[0][1] = 99;
 
   // VECTOR
-  vector<string> friends; // créer un tableau dynamique de string
+
+  vector<string> friends; // Dynamic array of string
 
   friends.push_back("Oscar");
   friends.push_back("Adam");
   friends.push_back("Florent");
   friends.push_back("Angela");
 
-  // friends.begin renvoi le pointeur de début du tableau 
-  friends.insert(friends.begin() + 1 "Jim"); //En indiquant ensuite un nombre on insert la valeur à la position souhaité
+  // friends.begin return the pointer of the first array element
+  friends.insert(friends.begin() + 1 "Jim"); // The number is required to specify the emplacement of the specified string
   friends.insert(friends.begin() + 3 "John");
-  friends.erase(friends.begin() + 3); // Supprime la personne présente à l'index 3 donc John
+  friends.erase(friends.begin() + 3); // Delete the third element
 
 
-  // Afficher les valeur dans un vecteur
+  // Display value
   cout << friends.at(0) << endl;
   cout << friends.at(3)  << endl;
   cout << friends.size() << endl;
 
   //FONCTIONS
-  
-  // La fonction est définit au dessus du main
+ 
+  // Function define on top of main
   int sum = addNumbers(12, 43);
 
   cout << sum << endl;
@@ -206,4 +201,8 @@ int main() // Comme en C la fonction main demarre tout programme Cpp
   }while(index <= 5);
 
   return 0;
+}
+
+for (size_t i = 0; i < length; i++) {
+ std::cout << "message" << endl; 
 }
