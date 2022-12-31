@@ -1,3 +1,2 @@
 In main.rs put this line:
 
-#![allow(dead_code)]
