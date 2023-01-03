@@ -5,16 +5,15 @@
 /*
     By convention in Rust Generic are Uppercase and one letter T, U, V, W...
     We declare generic right after the function name by using angle braces, and by
-    replacing the datatype by the generics we need here T.
-    We use PartialOrd Trait to allow comparisons operation for our generics data
-    We use Copy Trait to allow the behavior of copy data for our generics data (int, list, slice...)
+    replacing the datatype by the generics we need (here T).
+    We use "PartialOrd" Trait to allow comparisons operation for our generics data
+    We use "Copy Trait" to allow the behavior of copy data for our generics data (int, list, slice...)
 */
 fn largest<T: std::cmp::PartialOrd + Copy>(list: &[T]) -> T {
     let mut largest = list[0];
     //To allow the moves of a standart data with Copy trait we need to specify the Copy Trait
     for &item in list {
         // Here the compiler throw an error because by default it does'nt now how to compare generics
-
         if item > largest {
             largest = item;
         }
@@ -26,19 +25,22 @@ fn largest<T: std::cmp::PartialOrd + Copy>(list: &[T]) -> T {
 fn main() {
     //We can now use our function for multiple data like for this example chars and integer
     let number_list = vec![34, 50, 25, 100, 65];
-
-    let result = largest(&number_list);
-    println!("The largest number is {}", result);
-
     let char_list = vec!['y', 'm', 'a', 'q'];
+    let string_slice_list = vec!["Adam", "Hanna", "Imn"];
 
-    let result = largest(&char_list);
-    println!("The largest char is {}", result);
+    let result_num = largest(&number_list);
+    let result_char = largest(&char_list);
+    let result_string_slices = largest(&char_list);
+
+    println!("The largest num is {}", result_num);
+    println!("The largest char is {}", result_char);
+    println!("The largest string is {}", result_string_slices);
 
     /*
         Generics with struct:
         You can use multiple generic if many data have to be different in struct
     */
+    #[derive(Debug)]
     struct Point<T, U> {
         x: T,
         y: U,
@@ -46,12 +48,13 @@ fn main() {
 
     /*
         The first and second exemple work with only one generics, because both x and y belongs
-        to the same data type but in the third case we have 2 different type which obliges us
+        to the same data type but in the third and fourth case we have 2 different type which obliges us
         to use 2 differents generics
     */
     let both_integer = Point { x: 5, y: 10 };
     let both_float = Point { x: 1.0, y: 4.0 };
     let integer_and_float = Point { x: 5, y: 4.0 };
+    let integer_and_float = Point { x: "Adam", y: 4.0 };
 
     /*
         Generics with Enum:
@@ -82,7 +85,7 @@ fn main() {
 
     /*
         Impl must have <T> to precise to the compiler that the Type in Point2 is generic
-        and llow the method to be implemented and functionnal for all generics
+        and allow the method to be implemented and functionnal for all generics
     */
     impl<T> Point2<T> {
         fn x(&self) -> &T {

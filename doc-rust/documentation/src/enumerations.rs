@@ -1,9 +1,8 @@
 /*
-Enums are a special type which have a final set of values, as an example if you want to store
-specific values inside a type of data wich have only a limited knowed value you should use enum
-Example for Ip address which of only 2 type of ip address which are ipv4 & ipv6.
+*Enums are a special type which have a final set of values, as an example if you want to store
+*specific values inside a type of data wich have only a limited knowed value you should use enum
+*Example for Ip address which of only 2 type of ip address which are ipv4 & ipv6.
 */
-
 //Basic enum implements no value
 
 #[derive(Debug)]
@@ -37,16 +36,12 @@ struct MoveMessage {
 struct WriteMessage(String); // tuple struct
 struct ChangeColorMessage(i32, i32, i32); // tuple struct
 
-//-------------------------------------------------------------------------------------------
-
 //As struct enum can implement method
 impl Message {
     fn call(&self) {
         println!("Method call:\n {:#?}", &self);
     }
 }
-
-//-------------------------------------------------------------------------------------------
 
 fn main() {
     let _four = IpAddrKind::V4; //Variant are namespaced under it's identifier
@@ -59,8 +54,6 @@ fn main() {
     route(IpAddrKind::V4);
     route(IpAddrKind::V6);
 
-    //-------------------------------------------------------------------------------------------
-
     //Enum can contains data of multiple type (str, struct, bool...)
     //Here the return of the function V4 and V6 return an instance of the type IpAddrKindWithData.
     let _home = IpAddrKindWithData::V4(127, 0, 0, 1);
@@ -69,8 +62,6 @@ fn main() {
     //Here self value in call method refere to Write variant (m)
     let m = Message::Write(String::from("hello"));
     m.call();
-
-    //-------------------------------------------------------------------------------------------
 
     //You cannot calcul between an Opt<T> and an other type you must convert Opt<T>
     let some_number = Some(5);

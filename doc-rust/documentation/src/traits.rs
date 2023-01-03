@@ -5,6 +5,15 @@
     custom behavior in EXTERNAL CRATE or even STANDART functionnality like String struct...
 */
 
+#[derive(Debug)]
+enum Race {
+    Voidras,
+    Human,
+    Orc,
+    Troll,
+    Elf,
+}
+
 // In a game selling stuff can be considering as shared behavior between different race
 pub trait Sell {
     fn sell_weapons(&self) -> String; //Trait definition contains function signatures
@@ -15,41 +24,49 @@ pub trait Sell {
     fn sell_armors(&self) -> String;
 }
 
-pub trait Pantheon {}
-pub trait Swarm {}
+pub trait Pantheon {
+    fn empowerment(&self); //Must be override
+}
+pub trait Swarm {
+    fn swarmhosts(&self); //Must be override
+}
 
 // Hybrid trait can only be implement on type which implement both Pantheon and Swarm traits
-pub trait Hybrid: Pantheon + Pantheon {}
-
-pub trait Encrypt {
-    fn encrypt(T: Self) -> Self;
+pub trait Hybrid: Pantheon + Swarm {
+    unimplemented!();
 }
+
 #[derive(Debug)]
-pub struct Human {
+pub struct Character {
     pub level: u8,
-    pub race: String,
+    pub race: Race,
     pub name: String,
     pub hp: u8,
     pub shield: u8,
 }
 
-pub struct Orc {
-    pub level: u8,
-    pub race: String,
-    pub name: String,
-    pub hp: u8,
-    pub shield: u8,
+impl Swarm for Character
+where
+    Race: Race::Orc,
+    Race: Race::Troll,
+{
+    fn swarmhosts(&self) {
+        println!("Live for the swarm baby");
+    }
 }
 
-pub struct Voidras {
-    pub level: u8,
-    pub race: String,
-    pub name: String,
-    pub hp: u8,
-    pub shield: u8,
+impl Pantheon for Character
+where
+    Race: Race::Human,
+    Race: Race::Elf,
+{
+    fn empowerement(&self) {
+        println!("Raisen by the light!");
+    }
 }
 
-impl Sell for Human {
+#[derive(Debug)]
+impl Sell for Character {
     fn sell_weapons(&self) -> String {
         format!("{} {} sell a weapon", &self.name, &self.race)
     }
@@ -63,23 +80,27 @@ impl Sell for Human {
     }
 }
 
-impl Sell for Orc {
-    fn sell_weapons(&self) -> String {
-        format!("{} {} sell a weapon", &self.name, &self.race)
+//Function for any race implement Hybrid trait (here voidras)
+    //Syntax sugar (Cannot specify param of different type
+    fn master_of_leeches(character: (&impl Swarm + Pantheon), character2: &impl Hybrid) {
+    unimplemented!();
     }
-    //You not have to implement function which implement default behavior if you want
-    fn sell_armors(&self) -> String {
-        format!("{} {} sell an armor", &self.name, &self.race)
+    //Trait bounds syntax (You can specify param of different type)
+    fn master_of_leech<T: Hybrid, U: Pantheon + Swarm>(item: &T, item2: &U) {
+    unimplemented!();
     }
-}
-
-impl Pantheon for Human {}
-impl Swarm for Orc {}
-
-impl Pantheon for Voidras {}
-impl Swarm for Voidras {}
-
-impl Hybrid for Voidras {} //Voidras can implement Hybrid beacause he already impl Swar & Panth
+    //Or for more readability Trait bounds can be write after where statment
+    fn master_of_leech(item: &T, item2: &U) 
+        where T: Hybrid,
+              U:Swarm + Pantheon
+    {
+    unimplemented!();
+    }
+    //Return type which implement a specific trait
+    fn return_hybrid()->impl Hybrid
+    {
+    unimplemented!();
+    }
 
 //You can implement trait for existing crates even in std
 impl Encrypt for String {
@@ -108,7 +129,7 @@ There are 2 specifics trait already implemented in rust:
 fn main() {
     //Implement the Display trait for our Struct required to implement fmt method which describe how to print our
     //struct with println!()
-    impl std::fmt::Display for Human {
+    impl std::fmt::Display for Character {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(
                 f,
@@ -118,9 +139,9 @@ fn main() {
         }
     }
 
-    let mut adam = Human {
+    let mut adam = Character {
         level: 12,
-        race: String::from("Human"),
+        race: Race::Human,
         name: String::from("Adam"),
         hp: 50,
         shield: 100,

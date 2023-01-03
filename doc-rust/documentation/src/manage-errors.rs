@@ -82,4 +82,12 @@ fn main() {
         let mut f = File::open("hello.txt")?.read_to_string(&mut s)?;
         Ok(s)
     }
+
+    //Manage Error with ? operator
+    //? return Ok(T) if exist or return directly the error occured in the
+    //call context
+    fn fasted_way_to_manage_err() -> Result<(), Box<dyn Error>> {
+        let greeting_file = File::open("hello.txt")?;
+        Ok(())
+    }
 }
