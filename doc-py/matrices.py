@@ -1,6 +1,7 @@
 """
-    Une matrice est une liste de liste (Tableau a plusieurs dimension)
-    On préferera généralement utiliser la librairie numpy pour les calculs de matrice
+Une matrice est une liste de liste (Tableau a plusieurs dimension)
+On préferera généralement utiliser la librairie numpy 
+pour les calculs de matrices.
 """
 
 # Déclaration d'une matrice
@@ -28,7 +29,8 @@ for x in listSize:
 row = len(matrice)
 col = len(matrice[0])
 
-# Parcourir une matrice (Parcour chaque ligne x, parcourt chaque colonne (y) de de chaque ligne (x) (donc chaque élément)
+# Parcourir une matrice (Parcour chaque ligne x, parcourt chaque colonne (y)
+# de de chaque ligne (x) (donc chaque élément)
 for x in matrice:
     for y in x:
         print(y)
@@ -38,7 +40,7 @@ for x in matrice:
     Matrice carré : matrice dont le nombre de line est = au nombre de colonne
     Matrice ligne : matrice possédant une seule ligne
     Matrice colonne : matrice possedant une seule colonne = vecteur colonne
-    Matrice null :C'est une matrice dont tout les élément sont nuls
+    Matrice null : C'est une matrice dont tout les élément sont nuls
 
     2 Matrices sont égale si:
         Elles ont le même nombre de ligne
@@ -47,5 +49,6 @@ for x in matrice:
 
     Matrice identité:
         Comporte le même nombre de ligne que de colonne
-        Pour chaque élément matrice[i][j] vaut 1 si i = j vaut 0 si i différent de j
+        Pour chaque élément matrice[i][j] vaut 1 si i = j vaut 
+        0 si i différent de j
 """

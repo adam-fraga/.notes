@@ -1,15 +1,16 @@
 import pandas as pd
 
-# Lire un fichier (Pren en param csv, excel, xml, json html, txt....)
+# Lire un fichier (Supporte plusieurs type de fichiers 
+# csv, excel, xml, json html, txt....)
 df = pd.read_csv("p2-arbres-fr.csv", sep=";")
 
-# Vérifier data du DF
+# Vérifier les data du dataframe
 df.shape
 
-# Retourne les lignes d'entête du DF
+# Retourne les lignes d'entête du dataframe
 print(df)
 
-# Supprimer les clonnes d'un DF (axis = 1 -> abscisse)
+# Supprimer les clonnes d'un dataframe (axis = 1 -> abscisse)
 df.drop(["NomCol1", "NomCol2","NomCol6"], axis=1)
 
 # Fournis les statistique de base pour chaque colonne
@@ -23,11 +24,11 @@ df.info()
 
 # Si il manque des data 2 options
 
-#1 - Remplacer les case vide par une valeur aléatoire dans le cas ci dessous l'age moyen 
+# 1 - Remplacer les case vide par une valeur aléatoire dans le cas ci dessous l'age moyen 
 # (Le risque est de corrompre le dataset original)
 df = df.fillna(data["age"].mean())
 
-#2 - Supprimer les lignes comportant des valeurs vide (la valeur inplace fixé à true modifie la variable du df
+# 2 - Supprimer les lignes comportant des valeurs vide (la valeur inplace fixé à true modifie la variable du df
 # Pas besoin de l'assigné en valeur à une nouvelle variable)
 # (Perte de donnée et donc d'effiscience)
 df.dropna(axis=0, inplace=True)
@@ -69,17 +70,18 @@ df["âge"] < 18
 # Injecte le Mask dans le dataframe, Récupère donc uniquement les passagers mineur
 df = [df["âge"] < 18]
 
-# Applique le masque et genère un nouveau dataset avec le nombre des différents passagers mineur par class
+# Applique le masque et genère un nouveau Dataset avec le nombre des différents passagers mineur par class
 df = [df["âge"] < 18]["pclass"].values_counts()
 
 # Regroupe les passager mineur selon leur class et leur genre et définit leur moyenne en pourcentage
 df = [df["âge"] < 18]["pclass"].groupby(["sex","pclass"]).mean()
 
 # Fonctions d'indexing ILOC et LOC
+
 # A la façon de numpy on peux acceder aux index avec panda au lieu de data[0][0]:
 df.illoc[0, 0]
 # On peux ainsi faire de l'indexing, du slicing, appliqué le pas etc...
 df.illoc[0:5, 0:5]
 
-# Loc procède de la même manière mais permet de travailler avec les colonnes
+# Loc proccède de la même manière mais permet de travailler avec les colonnes
 df.loc[0:3, 'age', "sex"]

@@ -1,7 +1,7 @@
 # coding:utf-8
 import socket as so
 
-host, port = ('', 5566)
+host, port = ("", 5566)
 
 socket = so.socket(so.AF_INET, so.SOCK_STREAM)
 socket.bind((host, port))

@@ -6,20 +6,24 @@ Modes d'ouverture: r (lecture seul)
                    r+ (lecture/écriture dans un même fichier)
 """
 
-#LECTURE DE FICHIER
-#Ouvre le fichier
-fic = open("data.txt","r")
-#Lis le fichier
+# LECTURE DE FICHIER avec Python
+
+# Ouvre le fichier
+fic = open("data.txt", "r")
+
+# Lis le fichier
 content = fic.read()
 print(content)
-#Lire une ligne (un second rappel de readline lira la suivante etc...
+
+# Lire une ligne (un second rappel de readline lira la suivante etc...
 line = fic.readline()
 line2 = fic.readline()
-#Lire toutes les lignes restantes sous forme de liste
+
+# Lire toutes les lignes restantes sous forme de liste
 lines = fic.readlines()
 
-#ECRIRE DANS UN FICHIER (2 syntaxe avec with ou comme ci dessus)
-with open("data.txt","w") as fic:
+# ECRIRE DANS UN FICHIER (2 syntaxe avec with ou comme ci dessus)
+with open("data.txt", "w") as fic:
     nombre = 123
     fic.write(str(nombre))
     fic.write("Salut a tous\n")

@@ -1,6 +1,5 @@
 # Définir une class
 class Humain:
-
     # Attribut de class le même pour tout les objet
     humains_crees = 0
     lieu_habitation = "Terre"
@@ -28,7 +27,6 @@ class Humain:
     # Methode static
 
     def definition(self):
-
         print("L'Humain est classé au sommet de la chaine alimentaire...")
 
     # definition = staticmethod(definition) -> revoir methode static
