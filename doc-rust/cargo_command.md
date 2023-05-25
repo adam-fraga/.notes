@@ -1,4 +1,4 @@
-##CARGO CMD
+# CARGO COMMANDS
 
 ### Create program:
 
@@ -56,4 +56,16 @@
 ```
     cargo modules generate tree (Visualize modules)
     cargo modules generate tree --with-types (Visualize modules, Data and Privacy)
+```
+
+### Cargo Watch (Watch change on a cargo project)
+
+```
+    OPTIONS:
+    -q quietly, -c clear clear console between each watch, -w watch, -x execute
+
+    EXAMPLES:
+    cargo install cargo-watch (Install globaly cargo watch)
+    cargo watch -q -c -w src -x run (Watch src 
+    cargo watch -q -c -w tests -x "test -q my_test_function -- --nocapture"
 ```

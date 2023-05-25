@@ -1,10 +1,8 @@
-enum SpreadsheetCell {
-    Int(i32),
-    Float(f64),
-    Text(String),
-}
-
 fn main() {
+    //Array have a fix size
+    let arr: [u8; 5] = [1, 2, 3, 4, 5];
+    println!("{arr[0]}");
+
     /*
      ** Collections contrarly to Tuple, Array, int, char and bool are store to the heap,
      ** when a value store on the heap leave a scope the value is drop
@@ -16,11 +14,24 @@ fn main() {
     let mut v: Vec<i32> = Vec::new();
     let v2 = vec![1, 2, 3];
 
+    //Create a vector which cannot grow (reallocate) with size of 10
+    let v_with_fixed_capacity: Vec<i32> = Vec::with_capacity(10);
+
     //Add value to a Vector
     v.push(5);
     v.push(6);
     v.push(7);
     v.push(8);
+    v.push(9);
+
+    //length of the vector
+    v.len();
+    //Capacity of the vector (Size available before it realocate)
+    v.capacity();
+    //Remove the last element from the Array
+    v.pop();
+    //Remove a value to a specific index
+    v.remove(0);
 
     // We can reference a vector value by 2 way
     let third: &i32 = &v[2]; //store the reference in third
@@ -61,19 +72,4 @@ fn main() {
     for i in &mut v {
         *i += 50;
     }
-
-    /*
-    **Enum use the same type so we can store variant of enum into a vector and have multiple value
-    **If you dont know the exhaustive set of types a program will get at runtime to store in a vector, 
-    **the enum technique wont work. Instead, you can use a trait object.
-    */
-
-    let row = vec![
-        SpreadsheetCell::Int(3),
-        SpreadsheetCell::Int(12),
-        SpreadsheetCell::Int(21),
-        SpreadsheetCell::Text(String::from("blue")),
-        SpreadsheetCell::Text(String::from("pink")),
-        SpreadsheetCell::Float(10.12),
-    ];
 }

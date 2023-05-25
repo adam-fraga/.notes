@@ -5,6 +5,17 @@
     covered in match branches.
 */
 
+// Enum can contain any type
+
+#[derive(Debug)]
+enum Types {
+    Bool(boolean),
+    Slice(&str),
+    StructLiteral { name: &str, hp: u32 },
+    Array([u32; 5]),
+    OtherEnum(UsState),
+}
+
 #[derive(Debug)]
 enum UsState {
     Alabama,
@@ -32,7 +43,7 @@ fn main() {
 
         match coin {
             Coin::Penny => {
-                println!("Lucky penny!"); //{} for multiple lines branches
+                println!("Lucky penny!"); // use {} for multiple lines branches
                 1 // coin match with Coin::Penny
             }
             Coin::Nickel => 5,
@@ -55,7 +66,7 @@ fn main() {
 
     //-------------------------------------------------------------------------------------------
 
-    //Match with option functionand
+    //Match with option
     fn plus_one(x: Option<i32>) -> Option<i32> {
         match x {
             Some(i) => Some(i + 1), // add one if x exist
@@ -92,7 +103,7 @@ fn main() {
     //-------------------------------------------------------------------------------------------
 
     /*
-    Match pattern can also be use with other value than enum like numb, string and so on
+    Match pattern can also be use with other value than enum like number, string and so on
     If the value is not necessary you can use  the "_" which does not bind value
     This time we don't need the dice roll result we just said the user must reroll
     */
@@ -100,7 +111,7 @@ fn main() {
 
     match dice_roll2 {
         3 => add_fancy_hat2(),
-        13..=19 => println!("Dice cannot contain that number"), //Range matching
+        13..=19 => println!("Dice cannot contain that number"), //Range matching including 19
         7 => remove_fancy_hat2(),
         _ => reroll(), // Similar to default in switch statement (All the other case will match this pattern)
     }

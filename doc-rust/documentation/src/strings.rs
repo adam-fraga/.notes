@@ -3,11 +3,11 @@ fn main() {
 
     //Create new string
     let mut s = String::new(); //Empty string
-    let s = "initial contents".to_string();
-    let s = String::from("initial contents");
+    let s = "Hello world".to_string();
+    let s = String::from("Hello world");
+    let s = format!("Hello world");
 
-    //Grow a string
-    let mut s = String::from("foo");
+    //Grow a string (String have to be mutable)
     s.push_str("bar");
     let s2 = "loo";
     s.push_str(s2);

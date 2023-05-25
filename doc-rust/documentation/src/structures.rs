@@ -12,21 +12,22 @@ struct Human {
 //Implement a method and associate function to a struct
 impl Human {
     // By convention we use new with an associate function as a constructor
-    //Self in return value with S "Uppercase" is an alias for Human (Type)
+    // Self in return value with S "Uppercase" is an alias for Human (Type) same as fn()-> Human
+    // Associate function does not contain self and are called with "::"
     fn _new(name: String, eyes: String, age: u8, hungry: bool) -> Self {
         //Rust allow this syntaxt if the struct prop name match with arg name
         return Human {
-            name, //Instead of name = name...
-            eyes,
-            age,
-            hungry,
+            name,   //Instead of (name: name) because arg & field have the same name
+            eyes,   // " Same
+            age,    // "
+            hungry, // "
         };
     }
-    // Associate function does not contain self and are called with "::"
-    // Associate func are same as static method in OOP)
+    // Another simple Associate func (same as static method in OOP)
     fn answer() -> u8 {
         42
     }
+
     // Method contain self keyword and are related to instances of struct
     // self keyword = this keyword in OOP
     fn say_hello(&self) {
@@ -85,6 +86,9 @@ fn main() {
     let _black = Color(0, 0, 0);
     let _position = Position(-23, 34, 100);
     let _subject = AlwaysEqual;
+
+    // Destructure a struct
+    let Human { name, eyes, .. } = adam;
 
     // Destructure a tuple struct
     struct Pair(u8, f64);

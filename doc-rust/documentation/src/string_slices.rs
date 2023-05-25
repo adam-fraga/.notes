@@ -1,7 +1,6 @@
 fn main() {
-    //SLICES
-
-    //Slice in rust are part of string and are immutables.
+    //Slice in rust are part of string and are immutables, it's useful and cheap to use them when you have
+    //To parse data but not modify them.
 
     let s = String::from("Hello world");
 
@@ -10,14 +9,17 @@ fn main() {
     slice_are_awesomes();
 
     let s = String::from("127.0.0.1:8080");
-    let s_slice = &s[10..]; //Syntax to display part of slice
-                            /*
-                            (Warning number in this syntaxe refere to byte wich is not a good way to manage slices)
-                            some character as emoji or foreigners alphabet are encoded into more than one byte if you
-                            try to retrieve that info with that method rust compiler will throw an error
-                            */
+    let s_slice = &s[10..]; //Syntax to display part of slice here from the 10th byte to the last
+
+    /*
+    (Warning number up there "[10..]" in this syntax refere to byte wich is not a good way to manage slices)
+    some character as emoji or foreigners alphabet are not UTF-8 encoded (1byte/character)
+    like japanese, cyrilic or even emoji try to retrieve that info with that part slice rust compiler will throw an error
+    */
+
+    //Slice can be a litteral or a reference to a string
     let s_borrow: &str = &s;
-    let s_litteral = "1234"; //Litteral in rust are slices
+    let s_litteral = "1234"; // <-------Litteral in rust are slices
 
     dbg!(&s);
     dbg!(s_slice);
@@ -27,11 +29,10 @@ fn main() {
     // Function that return the index of the word to finaly get the first word (constraint)
     fn first_word(s: &String) -> usize {
         let bytes = s.as_bytes(); //as_byte convert string to a table of bytes (octets)
-
         for (i, &element) in bytes.iter().enumerate() {
-            //Enumerate return a tuple of (index, item) -> destructurate here
+            //Enumerate return a tuple of (index, item) -> which are destructured here to "i" and "&element".
             if element == b' ' {
-                //Byte litreral syntax
+                //Byte litreral syntax ( If the byte is equel to space then return the index of the word.
                 return i;
             }
         }
@@ -43,8 +44,8 @@ fn main() {
 
         for (i, &item) in bytes.iter().enumerate() {
             if item == b' ' {
-                return &s[0..i]; //Return a sclite which is a reference to s
-                                 //from begin to index which equels to "space"
+                return &s[0..i]; //Return a slice which is a reference to s
+                                 //from begin to index which equals to "space"
             }
         }
         &s[..] //if no space found return reference to the entire string
