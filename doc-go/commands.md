@@ -23,3 +23,10 @@ go run file.go
 ```
 GOOS=windows GOARCH=amd64 go build .
 ```
+
+#### MANAGE DEPENDENCIES
+
+```
+go get (Auto fetch dependencies using in project)
+go add "my_dep" 
+```
