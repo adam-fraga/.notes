@@ -42,12 +42,13 @@ func do_something_else(wg *sync.WaitGroup, c chan []string) {
 }
 
 func main() {
+	//Create a wait group that store go routine
 	wg := sync.WaitGroup{}
 	c := make(chan []string)
 	// Add 3 (number of goroutines) to the waiting group
 	wg.Add(3)
 
-	// Run the goroutines and pass the waiting group as a pointer and the channel
+	// Run the goroutines and pass the waiting group as a reference and the channel
 	go do_something(&wg, c)
 	go do_anotherthing(&wg, c)
 	go do_something_else(&wg, c)
