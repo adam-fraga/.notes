@@ -4,6 +4,17 @@ import (
 	"fmt"
 )
 
+// Structure (same to object)
+type Vertex struct {
+	X int
+	Y int
+}
+
+// Method
+func (v *Vertex) position() {
+	fmt.Printf("X: %#v, Y: %#v", v.X, v.Y)
+}
+
 func Collections() {
 	// Arrays
 	table_one := [5]int{1, 1, 1, 1, 5}
