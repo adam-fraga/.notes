@@ -1,6 +1,6 @@
 #### INIT MODULE
 
-```
+```sh
     go mod init adam/hello
 ```
 
@@ -10,23 +10,28 @@ we call the package containing this function "main")**
 
 #### COMPILE OR EXECUTE GO FILE(S)
 
-```
+```sh
 go build .
 go build file.go
 
+#Optimize Build
+go build -trimpath -ldflags "-w -s" -o "mybinary"
+CGO_ENABLED=0 go build -trimpath -ldflags="-w -s" -o mybinary && upx --best --lzma mybinary
+
 go run .
 go run file.go
+
 ```
 
 #### COMPILE FOR SPECIFIC OS
 
-```
+```sh
 GOOS=windows GOARCH=amd64 go build .
 ```
 
 #### MANAGE DEPENDENCIES
 
-```
+```sh
 go get (Auto fetch dependencies using in project)
-go add "my_dep" 
+go add "my_dep"
 ```
