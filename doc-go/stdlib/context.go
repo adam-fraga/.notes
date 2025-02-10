@@ -1,51 +1,40 @@
-// This example demonstrates common uses of the context package in Go.
+// This example demonstrates common uses of the context package in Go within an HTTP server.
 // The context package is used for carrying deadlines, cancellation signals,
 // and request-scoped values across API boundaries and between processes.
 
 // Key concepts demonstrated:
 //
-// Always use defer cancel() to prevent context leaks
-// Context values are passed through the entire chain
-// Multiple goroutines can share the same context
-// Different types of context termination (timeout, deadline, cancellation)
-// Proper error handling patterns
+// - Always use defer cancel() to prevent context leaks
+// - Context values are passed through the entire chain
+// - Multiple goroutines can share the same context
+// - Different types of context termination (timeout, deadline, cancellation)
+// - Proper error handling patterns in HTTP handlers
 //
 // Some important points about context usage:
 //
-// Context should be the first parameter of a function
-// Never store contexts in structs
-// Key type should be unexported to avoid collisions
-// Always propagate context when making downstream calls
-// Use context values sparingly, mainly for request-scoped data
+// - Context should be the first parameter of a function
+// - Never store contexts in structs
+// - Key type should be unexported to avoid collisions
+// - Always propagate context when making downstream calls
+// - Use context values sparingly, mainly for request-scoped data
+
 package stdlib
 
 import (
 	"context"
 	"fmt"
+	"html/template"
+	"net/http"
 	"time"
 )
 
 // SimulateDBQuery simulates a database operation that takes time
 func SimulateDBQuery(ctx context.Context) (string, error) {
-	// Create a channel to simulate work
 	select {
 	case <-time.After(2 * time.Second):
 		return "Query Result", nil
 	case <-ctx.Done():
 		return "", ctx.Err()
-	}
-}
-
-// ProcessWithValue demonstrates context with values
-func ProcessWithValue(ctx context.Context) {
-	// Get value from context
-	if userID, ok := ctx.Value("userID").(string); ok {
-		fmt.Printf("Processing request for user: %s\n", userID)
-	}
-
-	// Get multiple values
-	if authToken, ok := ctx.Value("authToken").(string); ok {
-		fmt.Printf("Using auth token: %s\n", authToken)
 	}
 }
 
@@ -63,95 +52,82 @@ func Worker(ctx context.Context, id int) {
 	}
 }
 
-func Ctx() {
-	fmt.Println("Context Package Examples")
-	fmt.Println("------------------------")
+// HandleWithTimeout demonstrates using context with timeouts in an HTTP handler
+func HandleWithTimeout(w http.ResponseWriter, r *http.Request) {
+	// Create a context with a timeout
+	ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)
+	defer cancel()
 
-	// Example 1: Context with timeout
-	fmt.Println("\n1. Context with Timeout:")
-	timeoutCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel() // Always defer cancel to avoid context leak
-
-	result, err := SimulateDBQuery(timeoutCtx)
+	result, err := SimulateDBQuery(ctx)
 	if err != nil {
-		fmt.Printf("Query failed: %v\n", err)
-	} else {
-		fmt.Printf("Query succeeded: %s\n", result)
+		http.Error(w, "Query failed: "+err.Error(), http.StatusGatewayTimeout)
+		return
 	}
 
-	// Example 2: Context with deadline
-	fmt.Println("\n2. Context with Deadline:")
-	deadline := time.Now().Add(1 * time.Second)
-	deadlineCtx, cancelDeadline := context.WithDeadline(context.Background(), deadline)
-	defer cancelDeadline()
+	fmt.Fprintf(w, "Query succeeded: %s", result)
+}
 
-	select {
-	case <-deadlineCtx.Done():
-		fmt.Printf("Context deadline exceeded: %v\n", deadlineCtx.Err())
-	case <-time.After(2 * time.Second):
-		fmt.Println("This won't be reached due to deadline")
+// HandleWorker demonstrates launching a worker that stops when the request context is canceled
+func HandleWorker(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	go Worker(ctx, 1) // Worker will stop if request is canceled
+
+	fmt.Fprintln(w, "Worker started. Try canceling the request.")
+}
+
+// HandleTemplateRendering demonstrates passing context into templ rendering
+func HandleTemplateRendering(w http.ResponseWriter, r *http.Request) {
+	tmpl := `<h1>Hello, {{.Name}}</h1><p>Request ID: {{.RequestID}}</p>`
+
+	// Extract values from context
+	ctx := r.Context()
+	name := ctx.Value("userName")
+	if name == nil {
+		name = "Guest"
 	}
 
-	// Example 3: Context with cancellation
-	fmt.Println("\n3. Context with Cancellation:")
-	cancelCtx, cancelFunc := context.WithCancel(context.Background())
-
-	// Start worker
-	go Worker(cancelCtx, 1)
-
-	// Let it work for 2 seconds
-	time.Sleep(2 * time.Second)
-
-	// Cancel the context
-	cancelFunc()
-	time.Sleep(time.Second) // Give worker time to stop
-
-	// Example 4: Context with values
-	fmt.Println("\n4. Context with Values:")
-	// Create a context with values
-	baseCtx := context.Background()
-	userCtx := context.WithValue(baseCtx, "userID", "user123")
-	authCtx := context.WithValue(userCtx, "authToken", "token456")
-
-	ProcessWithValue(authCtx)
-
-	// Example 5: Context chain with multiple operations
-	fmt.Println("\n5. Context Chain:")
-	// Create a timeout context
-	chainCtx, chainCancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer chainCancel()
-
-	// Add values to the context chain
-	chainCtx = context.WithValue(chainCtx, "requestID", "req789")
-	chainCtx = context.WithValue(chainCtx, "traceID", "trace101")
-
-	// Start multiple workers with the same context
-	for i := 1; i <= 3; i++ {
-		go Worker(chainCtx, i)
+	// Use request ID for tracing
+	requestID := ctx.Value("requestID")
+	if requestID == nil {
+		requestID = "unknown"
 	}
 
-	// Let workers run for 2 seconds
-	time.Sleep(2 * time.Second)
-	chainCancel()           // Cancel all workers
-	time.Sleep(time.Second) // Give workers time to stop
+	// Render template with context values
+	t, _ := template.New("webpage").Parse(tmpl)
+	t.Execute(w, map[string]string{
+		"Name":      name.(string),
+		"RequestID": requestID.(string),
+	})
+}
 
-	// Example 6: Handling context errors
-	fmt.Println("\n6. Context Error Handling:")
-	errorCtx, errorCancel := context.WithTimeout(context.Background(), time.Millisecond)
-	defer errorCancel()
+// HandleWithValues demonstrates passing values through context
+func HandleWithValues(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 
-	// Wait for more than the timeout
-	time.Sleep(10 * time.Millisecond)
+	// Inject values into context
+	ctx = context.WithValue(ctx, "userName", "Alice")
+	ctx = context.WithValue(ctx, "requestID", "req-12345")
 
-	// Check context errors
-	switch errorCtx.Err() {
-	case context.DeadlineExceeded:
-		fmt.Println("Context deadline exceeded")
-	case context.Canceled:
-		fmt.Println("Context was canceled")
-	case nil:
-		fmt.Println("No error")
-	default:
-		fmt.Printf("Other error: %v\n", errorCtx.Err())
+	HandleTemplateRendering(w, r.WithContext(ctx))
+}
+
+func mainFunc() {
+	mux := http.NewServeMux()
+	//   /timeout: Uses context.WithTimeout() to automatically cancel long-running queries if they exceed 3 seconds.
+	// /worker: Starts a worker that stops when the request is canceled.
+	// /template: Demonstrates passing context values into templ-based rendering.
+	// /context-values: Injects user and request ID values into context, then calls /template to use them.
+
+	mux.HandleFunc("/timeout", HandleWithTimeout)
+	mux.HandleFunc("/worker", HandleWorker)
+	mux.HandleFunc("/template", HandleTemplateRendering)
+	mux.HandleFunc("/context-values", HandleWithValues)
+
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
 	}
+
+	fmt.Println("Starting server on :8080")
+	server.ListenAndServe()
 }
