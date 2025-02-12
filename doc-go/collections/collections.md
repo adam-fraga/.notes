@@ -1,91 +1,132 @@
-package main
+# **Documentation : Collections en Go (Slices, Maps, Structs)**
 
-import (
-	"fmt"
-)
+## **1. Introduction**
 
-// Structure (same to object)
+Go propose plusieurs structures de données pour stocker et manipuler des collections :  
+✅ **Tableaux (`array`)** – Taille fixe  
+✅ **Slices (`slice`)** – Taille dynamique  
+✅ **Maps (`map`)** – Tableaux associatifs  
+✅ **Structures (`struct`)** – Objets personnalisés
+
+---
+
+## **2. Tableaux (`arrays`)**
+
+```go
+table_one := [5]int{1, 1, 1, 1, 5} // Array de taille 5
+table_two := table_one             // Copie du tableau (pas une référence)
+table_two[1] = 12
+```
+
+💡 **Remarque :**
+
+- **Les tableaux ont une taille fixe** et ne peuvent pas être redimensionnés.
+- **L'affectation `=` crée une copie complète du tableau.**
+
+---
+
+## **3. Slices (`slices`)**
+
+Un **slice** est une vue dynamique sur un tableau. Contrairement aux tableaux, ils **peuvent être redimensionnés**.
+
+```go
+table_four := make([]int, 5)    // Slice avec 5 éléments initialisés à 0
+table_five := make([]int, 0, 5) // Slice vide avec capacité de 5
+
+slice_reference := table_two[1:] // Slice basé sur `table_two`
+manual_slice := []int{1, 2, 3}   // Déclaration directe
+
+// Ajouter un élément
+new_manual_slice := append(manual_slice, 13)
+
+// Afficher longueur et capacité
+fmt.Printf("Len: %d, Cap: %d, Slice: %#v\n", len(new_manual_slice), cap(new_manual_slice), new_manual_slice)
+```
+
+💡 **Remarque :**
+
+- **`len(slice)`** → Nombre d'éléments
+- **`cap(slice)`** → Taille max avant réallocation
+- **Les slices sont passés par référence (modifications appliquées sur l'original).**
+
+---
+
+## **4. Maps (`map`)**
+
+Une **map** est une table de correspondance `clé -> valeur` (équivalent à un `HashMap` en Rust).
+
+```go
+// Déclaration et assignation
+m := map[string]int{
+	"route": 66,
+	"age":   32,
+}
+
+// Lire une valeur (renvoie 0 si clé inexistante)
+j := m["root"] // j == 0
+
+// Vérifier si une clé existe
+i, ok := m["route"]
+fmt.Printf("i: %d, clé trouvée: %v\n", i, ok)
+
+// Supprimer une clé
+delete(m, "route")
+
+// Itération
+for key, value := range m {
+	fmt.Println("Key:", key, "Value:", value)
+}
+```
+
+💡 **Remarque :**
+
+- Si une clé n'existe pas, **Go renvoie la valeur par défaut (`0` pour `int`, `""` pour `string`)**
+- **`delete(m, key)`** supprime une clé
+- On peut vérifier si une clé existe avec **`val, ok := map[key]`**
+
+---
+
+## **5. Structures (`struct`)**
+
+Une **struct** est une définition d'objet regroupant plusieurs valeurs.
+
+```go
 type Vertex struct {
 	X int
 	Y int
 }
 
-// Method
+// Méthode attachée à `Vertex`
 func (v *Vertex) position() {
-	fmt.Printf("X: %#v, Y: %#v", v.X, v.Y)
+	fmt.Printf("X: %d, Y: %d\n", v.X, v.Y)
 }
 
-func Collections() {
-	// Arrays
-	table_one := [5]int{1, 1, 1, 1, 5}
-	table_two := table_one
-	table_two[1] = 12
-	// Or with make function
-	table_four := make([]int, 5)    // len(a)=5
-	table_five := make([]int, 0, 5) // len(b)=0, capacity(b)=5
+func main() {
+	v := Vertex{1, 2} // Instanciation
+	v.X = 4           // Modification d'un champ
 
-	// %#v flag to show variable representation
-	fmt.Printf("Table one %#v \n Table two %#v", table_one, table_two)
-	fmt.Printf("Table four %#v \n Table five %#v", table_four, table_five)
+	p := &v    // Pointeur vers la struct
+	p.X = 1e9  // Modification via pointeur
 
-	// Slices (same as rust)
-	slice_reference_two_first_elem := table_two[1:]
-	manual_slice := []int{1, 2, 3}
-
-	//Append an elem to a slice or array
-	new_manual_slice := append(manual_slice, 13)
-
-	//Len and capacity show size of the array and the capacity it can contains
-	fmt.Printf("%#v \n %#v\n %#v\n", len(slice_reference_two_first_elem), cap(manual_slice), new_manual_slice)
-
-	//Map (same to hasmap rust key value pair)
-	//map[KeyType]ValueType (Valuetype are the same type)
-	var m map[string]int
-	m["route"] = 66
-	m["age"] = 32
-
-	//If key does not exist we get the value 0
-	j := m["root"] // j == 0
-
-	// In this statement, the first value (i) is assigned the value stored under the key "route". If that key doesn’t exist, i is the value type’s zero value (0). The second value (ok) is a bool that is true if the key exists in the map, and false if not.
-	i, ok := m["route"]
-
-	fmt.Printf("m: %#v\n i: %#v\n j: %#v \n ok: %#v \n", m, i, j, ok)
-
-	// delete element
-	delete(m, "route")
-
-	//iterate trough a map
-	for key, value := range m {
-		fmt.Println("Key:", key, "Value:", value)
-	}
-
-	commits := map[string]int{
-		"rsc": 3711,
-		"r":   2138,
-		"gri": 1908,
-		"adg": 912,
-	}
-
-	fmt.Printf("commits: %#v \n", commits)
-
-	v := Vertex{1, 2}
-	v.X = 4
-	fmt.Println(v.X)
-
-	v.position()
-
-	//Access struct fields trough pointer
-	p := &v
-	p.X = 1e9
-	fmt.Println(v)
-
-	var (
-		v1 = Vertex{1, 2}  // has type Vertex
-		v2 = Vertex{X: 1}  // Y:0 is implicit
-		v3 = Vertex{}      // X:0 and Y:0
-		p2 = &Vertex{1, 2} // has type *Vertex
-	)
-
-	fmt.Println(v1, p2, v2, v3)
+	fmt.Println(v) // {1000000000 2}
+	v.position()   // Appel d'une méthode
 }
+```
+
+💡 **Remarque :**
+
+- **Une struct peut avoir des méthodes associées.**
+- **L'accès aux champs peut se faire via un pointeur `*struct` sans déréférencement explicite (`p.X` fonctionne directement).**
+
+---
+
+## **6. Résumé**
+
+| Type     | Description                                |
+| -------- | ------------------------------------------ |
+| `array`  | Taille fixe, copie par valeur              |
+| `slice`  | Taille dynamique, référence sur un tableau |
+| `map`    | Table de hachage (`clé -> valeur`)         |
+| `struct` | Objet personnalisé avec des champs         |
+
+Go privilégie **la simplicité et la performance**, notamment avec **les slices et les maps** qui sont les plus couramment utilisés. 🚀
